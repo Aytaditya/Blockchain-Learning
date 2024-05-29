@@ -1,4 +1,6 @@
-pragma solidity ^0.8.11;
+pragma solidity >=0.5.0 <0.6.0;
+
+// Dolution of cryptoZombies exercies
 
 contract ZombieFactory {
 
@@ -12,8 +14,19 @@ contract ZombieFactory {
 
     Zombie[] public zombies;
 
-    function createZombie (string memory _name, uint _dna) public {
-    
+    function _createZombie(string memory _name, uint _dna) private {
+        zombies.push(Zombie(_name, _dna));
+   
+    }
+
+    function _generateRandomDna(string memory _str) private view returns (uint) {
+        uint rand = uint(keccak256(abi.encodePacked(_str)));
+        return rand % dnaModulus;
+    }
+
+    function createRandomZombie(string memory _name) public {
+        uint randDna = _generateRandomDna(_name);
+        _createZombie(_name, randDna);
     }
 
 }
